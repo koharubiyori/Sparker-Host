@@ -6,7 +6,7 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "yarn start:dev",
-    "start:dev": "cross-env NODE_ENV=development electron-forge start",
+    "start:dev": "set NODE_OPTIONS=--enable-source-maps && cross-env NODE_ENV=development electron-forge start",
     "start:prod": "cross-env NODE_ENV=production electron-forge start",
     "package": "cross-env NODE_ENV=production electron-forge package",
     "make": "cross-env NODE_ENV=production electron-forge make",

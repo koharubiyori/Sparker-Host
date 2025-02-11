@@ -37,7 +37,6 @@ const createWindow = (): void => {
 // start app
 ;(async () => {
   const ready = initializeInMainProgress()
-
   app.on('ready', async () => {
     await ready
     globals.tray = await createTray()

@@ -15,7 +15,6 @@ export default async function initializeInMainProgress() {
   const i18n = globalI18n()
   app.setAppUserModelId(i18n.appName)
 
-  throw new Error('test')
   try {
     if ((await isAdministrator()) === false) throw new Error('Unable to run without administrator rights.')
     storage.setDataPath(PREFERENCE_PATH)
