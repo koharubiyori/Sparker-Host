@@ -1,5 +1,6 @@
 import childProcess from 'child_process'
 
+// Temporarily unused
 const serviceManager = {
   getAllServiceNames() {
     return new Promise<string[]>((resolve, reject) => {

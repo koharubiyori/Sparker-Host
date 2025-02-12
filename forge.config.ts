@@ -18,10 +18,7 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: !isDev,
     icon: 'assets/app.ico',
-    extraResource: ['Sparker-Service.exe'],
-    win32metadata: {
-      'requested-execution-level': 'requireAdministrator'
-    },
+    extraResource: ['Sparker-Service.exe']
   },
   rebuildConfig: {},
   makers: [
