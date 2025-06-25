@@ -1,0 +1,11 @@
+.history
+src/protoGen
+config
+node-base.exe
+dist
+node_modules
+yarn.lock
+yarn-error.log
+logs
+token.key
+

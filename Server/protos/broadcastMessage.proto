@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package sparker.server;
+
+message BroadcastMessageEnvelope {
+  oneof content {
+    RequestToUnlockMessage requestToUnlockMessage = 1;
+  }
+}
+
+message RequestToUnlockMessage {}

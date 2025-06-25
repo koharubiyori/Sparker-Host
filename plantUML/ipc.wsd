@@ -1,0 +1,65 @@
+@startuml
+skinparam linetype ortho
+skinparam dpi 150
+skinparam componentStyle rectangle
+
+entity "Client" as c
+entity "Server" as s
+entity "User Service" as us
+entity "System Service" as ss
+entity "Credential Provider" as cp
+
+' 上至下的组件顺序反转，使箭头自然向下
+
+protocol "Named Pipe" as np_between_cp_ss {
+  in : ping
+  in : logon
+  out : pong
+  out : requestToUnlock
+}
+
+protocol "Named Pipe" as np_between_ss_us {
+  in : restart
+  in : stop
+}
+
+protocol "Named Pipe" as np_between_s_ss_us {
+  in : submitPort
+  in : stop
+  in : requestToUnlock
+}
+
+cp -right-> np_between_cp_ss
+np_between_cp_ss -right-> ss
+
+us -left-> np_between_ss_us
+np_between_ss_us -up-> ss
+
+us -left-> np_between_s_ss_us : submitPort\nonly
+ss -down-> np_between_s_ss_us
+np_between_s_ss_us -down-> s
+
+protocol "gRPC" as ss_grpc {
+  HostInfo
+  Power
+}
+
+protocol "gRPC" as us_grpc {
+  UserUtil
+}
+
+ss <-right- ss_grpc
+us <-right- us_grpc
+ss_grpc <-down- s
+us_grpc <-down- s
+
+' HTTP & WebSocket
+protocol "HTTP" as http
+protocol "Web Socket" as ws
+
+c -right-> http
+c -down-> ws
+http -down-> s
+ws -down-> s
+
+@enduml

@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CredProvider", "CredProvider\CredProvider.csproj", "{EDD905A1-1C64-4DB4-8E21-A66F70903FBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemService", "SystemService\SystemService.csproj", "{AE30F3D5-B52E-CE90-27E9-63FC27FECE80}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Commons", "Commons\Commons.shproj", "{A254CD8E-B2C7-493E-903E-0E4E5F513BF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{A129EF11-22EB-46A1-AC1C-5426D705AB4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDD905A1-1C64-4DB4-8E21-A66F70903FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD905A1-1C64-4DB4-8E21-A66F70903FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD905A1-1C64-4DB4-8E21-A66F70903FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD905A1-1C64-4DB4-8E21-A66F70903FBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE30F3D5-B52E-CE90-27E9-63FC27FECE80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE30F3D5-B52E-CE90-27E9-63FC27FECE80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE30F3D5-B52E-CE90-27E9-63FC27FECE80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE30F3D5-B52E-CE90-27E9-63FC27FECE80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A129EF11-22EB-46A1-AC1C-5426D705AB4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A129EF11-22EB-46A1-AC1C-5426D705AB4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A129EF11-22EB-46A1-AC1C-5426D705AB4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A129EF11-22EB-46A1-AC1C-5426D705AB4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B6EFEC1C-8B01-46BA-B1F9-8AF5A73994F2}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Commons\Commons.projitems*{a129ef11-22eb-46a1-ac1c-5426d705ab4a}*SharedItemsImports = 5
+		Commons\Commons.projitems*{a254cd8e-b2c7-493e-903e-0e4e5f513bf7}*SharedItemsImports = 13
+		Commons\Commons.projitems*{ae30f3d5-b52e-ce90-27e9-63fc27fece80}*SharedItemsImports = 5
+		Commons\Commons.projitems*{edd905a1-1c64-4db4-8e21-a66f70903fbd}*SharedItemsImports = 4
+	EndGlobalSection
+EndGlobal

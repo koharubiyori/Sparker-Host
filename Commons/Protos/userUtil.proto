@@ -1,0 +1,16 @@
+syntax = "proto3";
+option csharp_namespace = "SparkerUserService.Grpc";
+
+import "google/protobuf/empty.proto";
+
+package sparker.service;
+
+service UserUtilService {
+  rpc ShowToast (ShowToastRequest) returns (google.protobuf.Empty);
+  rpc LockSession (google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+message ShowToastRequest {
+  string title = 1;
+  string content = 2;
+}

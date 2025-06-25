@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers\{FC554755-47EF-46A1-8B77-D133127E14F1}]
+@="Sparker Credential Provider"

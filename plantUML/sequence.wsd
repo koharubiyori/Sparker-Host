@@ -1,0 +1,56 @@
+@startuml
+!pragma teoz true
+
+participant OS as os
+
+box "Services" #LightYellow
+  participant "Credential Provider" as cp
+  participant "System Service" as ss
+  participant "User Service" as us
+end box
+
+box "Server" #LightGray
+  participant "Server" as se
+end box
+
+box "Clients" #LightBlue
+  participant "Remote Client" as rc
+end box
+
+participant "Users" as users
+
+== Initialization ==
+
+os -\ cp : Start
+activate cp
+os -\ ss : Start
+ss -\ us : Start
+ss -\ se : Start
+
+== Power Management ==
+
+users --> cp : Request sending logon message to remote(optional)
+cp ->o ss : Inform
+  & ss -> se
+
+users -\ rc : Use
+rc ->o se : 
+  & se ->o ss
+  & ss -> os : Power Management
+ss -> cp : Request Logon
+cp -> os : Logon
+deactivate cp
+
+== Remote Control ==
+
+rc ->o se : Request Remote Control
+  & rc -> us : Remote Control
+us -> os : AV capture
+us -> se : Provide Captured AV data
+us -> os : Inject Virtual Inputs
+
+== Service Configuration ==
+     
+& se -> ss : Service Configuration
+se -> us : Service Configuration
+@enduml

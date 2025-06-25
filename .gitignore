@@ -1,0 +1,15 @@
+logs
+.history
+innoOut
+
+# Commons | CredProvider | SystemService
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+SystemService/config
+.vs
+.idea
+Sparker.Server.exe
+Sparker.UserService.exe

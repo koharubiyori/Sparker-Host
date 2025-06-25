@@ -1,0 +1,35 @@
+syntax = "proto3";
+option csharp_namespace = "SparkerSystemService.Grpc";
+
+import "google/protobuf/empty.proto";
+
+package sparker.service;
+
+service HostInfoService {
+  rpc Approach (ApproachRequest) returns (ApproachResponse);
+  rpc GetBasicInfo (google.protobuf.Empty) returns (GetBasicInfoResponse);
+  rpc IsValidCredential (IsValidCredentialRequest) returns (IsValidCredentialResponse);
+}
+
+message ApproachRequest {
+  bool with_mac_address = 1;
+}
+
+message ApproachResponse {
+  bool reached = 1;
+  optional string mac_address = 2;
+}
+
+message GetBasicInfoResponse {
+  string mac_address = 1;
+  bool hibernate_enabled = 2;
+}
+
+message IsValidCredentialRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message IsValidCredentialResponse {
+  int32 result = 1;
+}

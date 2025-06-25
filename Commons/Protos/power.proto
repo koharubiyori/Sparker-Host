@@ -1,0 +1,38 @@
+syntax = "proto3";
+option csharp_namespace = "SparkerSystemService.Grpc";
+
+import "google/protobuf/empty.proto";
+
+package sparker.service;
+
+service PowerService {
+  rpc Shutdown (ShutdownRequest) returns (google.protobuf.Empty);
+  rpc Sleep (SleepRequest) returns (google.protobuf.Empty);
+  rpc Unlock (UnlockRequest) returns (UnlockResponse);
+  rpc IsLocked (google.protobuf.Empty) returns (IsLockedResponse);
+}
+
+message ShutdownRequest {
+  bool force = 1;
+  int32 timeout = 2;
+  bool reboot = 3;
+  bool hybrid = 4;
+}
+
+message SleepRequest {
+  bool hibernate = 1;
+}
+
+message UnlockRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message UnlockResponse {
+  bool success = 1;
+}
+
+message IsLockedResponse {
+  bool locked = 1;
+}
+

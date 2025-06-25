@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <UserSecretsId>dotnet-SparkerSystemService-26a5c319-25bf-4a34-919b-aa91d3597e4b</UserSecretsId>
+        <RootNamespace>SparkerSystemService</RootNamespace>
+        <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <EnableSourceGeneration>true</EnableSourceGeneration>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <PublishAot>true</PublishAot>
+        <AssemblyName>Sparker.SystemService</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.30.2" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.71.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.162">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Serilog" Version="4.2.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+        <PackageReference Include="Serilog.Enrichers.WithCaller" Version="1.3.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+        <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
+        <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.1.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="..\Commons\Protos\hostInfo.proto" GrpcServices="Server" />
+        <Protobuf Include="..\Commons\Protos\power.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="logs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="logs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="logs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="logs\**" />
+    </ItemGroup>
+    
+
+    <Import Project="..\Commons\Commons.projitems" Label="Shared" />
+</Project>

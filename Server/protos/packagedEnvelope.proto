@@ -1,0 +1,12 @@
+syntax = "proto3";
+import "broadcastMessage.proto";
+
+package sparker.server;
+
+// PackagedEnvelope -> Envelope -> Message. Don't expose this concept in the code to keep the usage simple.
+message PackagedEnvelope {
+  oneof content {
+    BroadcastMessageEnvelope functions = 1;
+  }
+}
+

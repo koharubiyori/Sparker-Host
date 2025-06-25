@@ -1,0 +1,3 @@
+LockWorkStation
+GetForegroundWindow
+GetWindowThreadProcessId
