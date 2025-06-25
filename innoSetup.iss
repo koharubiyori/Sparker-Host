@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Sparker"
-#define MyAppVersion "1.0"
+#define MyAppVersion "0.9.0"
 #define MyAppPublisher "koharubiyori"
 #define MyAppExeName "sparker.exe"
 #define CredentialProviderGuid "FC554755-47EF-46A1-8B77-D133127E14F1"
