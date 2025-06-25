@@ -1,8 +1,10 @@
 ﻿using Serilog;
 using SparkerUserService;
+using SparkerUserService.Preferences;
 using SparkerUserService.Utils;
 
 LoggerInitializer.Initialize();
+Preference.InitializeAllPreferences();
 
 Log.Information("IsInUserSession: {inUserSession}, IsInteractive: {interactive}, IsElevated: {elevated}", 
   SessionChecker.IsInUserSession(), 

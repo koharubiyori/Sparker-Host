@@ -11,9 +11,10 @@ public static class TrayIconManager
 {
   private static TrayIconWithContextMenu trayIcon;
   
-  public static void Initialize()
+  public static async Task Initialize()
   {
-    using var iconRes = Utils.ReadResourceAsStream("icon.ico");
+    var untilCreated = new TaskCompletionSource();
+    await using var iconRes = Utils.ReadResourceAsStream("icon.ico");
     var icon = new Icon(iconRes);
     trayIcon = new TrayIconWithContextMenu
     {
@@ -33,6 +34,8 @@ public static class TrayIconManager
     };
     
     trayIcon.Create();
+    trayIcon.SubscribeToCreated((_, _) => untilCreated.SetResult());
+    await untilCreated.Task;
   }
 
   public static void Clean()

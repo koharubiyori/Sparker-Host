@@ -45,7 +45,7 @@ namespace SparkerCommons
     public const string GithubUrl = "https://github.com/koharubiyori/Sparker-Host";
     public const string ServiceName = "Sparker";
 
-    private const string PreferenceDirPathName = "ServicePreferences";
+    private const string PreferenceDirPathName = "Preferences";
     private const string LogDirPathName = "Logs";
     private const string ServerExeName = "Sparker.Server.exe";
     private const string UserServiceExeName = "Sparker.UserService.exe";
@@ -55,7 +55,7 @@ namespace SparkerCommons
 
 #if DEBUG
     public const bool Debug = true;
-    public static readonly string BasePath = Directory.GetCurrentDirectory();
+    public static readonly string BasePath = Path.Combine(Directory.GetCurrentDirectory(), "GenBase");
     public static readonly string PreferenceDirPath = Path.Combine(BasePath, PreferenceDirPathName);
     public static readonly string LogDirPath = Path.Combine(BasePath, LogDirPathName);
     public static readonly string ServerExePath = Path.Combine(BasePath, ServerExeName);

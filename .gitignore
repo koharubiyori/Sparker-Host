@@ -13,3 +13,5 @@ SystemService/config
 .idea
 Sparker.Server.exe
 Sparker.UserService.exe
+GenBase
+*.Designer.cs

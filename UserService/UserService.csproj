@@ -10,13 +10,14 @@
         <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
         <PublishAot>true</PublishAot>
         <AssemblyName>Sparker.UserService</AssemblyName>
+        <GenerateResourceDesignerFiles>true</GenerateResourceDesignerFiles>
     </PropertyGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\icon.ico" />
         <EmbeddedResource Update="Resources\Strings.resx">
           <Generator>ResXFileCodeGenerator</Generator>
-          <LastGenOutput>String.en-US.Designer.cs</LastGenOutput>
+          <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 
