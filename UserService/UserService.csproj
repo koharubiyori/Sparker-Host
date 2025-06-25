@@ -15,6 +15,11 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\icon.ico" />
+        <Compile Update="Resources\Strings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
         <EmbeddedResource Update="Resources\Strings.resx">
           <Generator>ResXFileCodeGenerator</Generator>
           <LastGenOutput>Strings.Designer.cs</LastGenOutput>

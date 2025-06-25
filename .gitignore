@@ -14,4 +14,3 @@ SystemService/config
 Sparker.Server.exe
 Sparker.UserService.exe
 GenBase
-*.Designer.cs
