@@ -42,7 +42,7 @@ namespace SparkerCommons
       }
     }
 
-    public const string GithubUrl = "https://github.com";
+    public const string GithubUrl = "https://github.com/koharubiyori/Sparker-Host";
     public const string ServiceName = "Sparker";
 
     private const string PreferenceDirPathName = "ServicePreferences";
