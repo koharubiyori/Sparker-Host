@@ -29,7 +29,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 PrivilegesRequired=admin
 OutputDir=innoOut
-OutputBaseFilename=Sparker
+OutputBaseFilename=SparkerInstaller_{#MyAppVersion}
 SetupIconFile=innoRes\app.ico
 SolidCompression=yes
 WizardStyle=modern
@@ -38,8 +38,8 @@ WizardStyle=modern
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+; [Tasks]
+; Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "CredProvider\bin\Release\SparkerCredProvider.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -54,7 +54,6 @@ Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Cr
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 ; Register the Credential Provider
