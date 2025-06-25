@@ -27,4 +27,7 @@
     <data name="Quit" xml:space="preserve">
         <value>Quit</value>
     </data>
+    <data name="Welcome" xml:space="preserve">
+        <value>Sparker is running...</value>
+    </data>
 </root>

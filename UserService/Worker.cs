@@ -10,7 +10,8 @@ public class Worker : BackgroundService
   
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    TrayIconManager.Initialize();
+    await TrayIconManager.Initialize();
+    Utils.Utils.WelcomeMessage();
 
     await Task.WhenAll(
       PipeToServer.Instance.RunAsync(),
