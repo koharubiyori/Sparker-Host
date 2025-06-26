@@ -105,7 +105,7 @@ public abstract class NamedPipeEndpoint<T>()
 
     try
     {
-      while (true)
+      while (!_tokenToBreakReadLoop!.IsCancellationRequested)
       {
         var bytesRead = await _pipeStream!.ReadAsync(buffer, _tokenToBreakReadLoop!.Token);
         if (bytesRead == 0)
