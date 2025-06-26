@@ -1,3 +1,4 @@
+using Serilog;
 using SparkerUserService.LocalServices;
 using SparkerUserService.Pipes;
 using SparkerUserService.Utils;
@@ -10,8 +11,10 @@ public class Worker : BackgroundService
   
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    await TrayIconManager.Initialize();
-    Utils.Utils.WelcomeMessage();
+    Task.Run(async () =>
+    {
+      if (await TrayIconManager.TryInitialize()) Utils.Utils.WelcomeMessage();
+    });
 
     await Task.WhenAll(
       PipeToServer.Instance.RunAsync(),

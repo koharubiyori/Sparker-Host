@@ -23,6 +23,7 @@ public class PipeToUserService()
       case Constants.SystemServicePipeEvents.In.Stop:
         SparkerService.Stop();
         break;
+      
     }
   }
 }

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.ServiceProcess;
 using H.NotifyIcon.Core;
+using Serilog;
 using SparkerCommons;
 using SparkerUserService.Pipes;
 
@@ -11,9 +12,9 @@ public static class TrayIconManager
 {
   private static TrayIconWithContextMenu trayIcon;
   
-  public static async Task Initialize()
+  public static async Task<bool> TryInitialize()
   {
-    var untilCreated = new TaskCompletionSource();
+    var untilCreated = new TaskCompletionSource<bool>();
     await using var iconRes = Utils.ReadResourceAsStream("icon.ico");
     var icon = new Icon(iconRes);
     trayIcon = new TrayIconWithContextMenu
@@ -32,10 +33,20 @@ public static class TrayIconManager
         new PopupMenuItem(Resources.Strings.Quit, (_, _) => PipeToSystemService.Instance.WriteStop())
       }
     };
+
+    trayIcon.SubscribeToCreated((_, _) => untilCreated.SetResult(true));
+    try
+    {
+      trayIcon.Create();
+    }
+    catch (InvalidOperationException e)
+    {
+      Log.Error(e, "Failed to create tray icon");
+      untilCreated.SetResult(false);
+    }
     
-    trayIcon.Create();
-    trayIcon.SubscribeToCreated((_, _) => untilCreated.SetResult());
     await untilCreated.Task;
+    return true;
   }
 
   public static void Clean()
