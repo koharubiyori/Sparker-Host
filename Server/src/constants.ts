@@ -14,4 +14,4 @@ export const WORKING_DIR = __DEV ? p.resolve(process.cwd(), "GenBase") : p.dirna
 export const LOG_PATH = p.resolve(WORKING_DIR, './Logs')
 export const CONFIG_PATH = p.resolve(WORKING_DIR, './config')
 export const PAIRED_DEVICES_FILE = p.resolve(CONFIG_PATH, './devices.json')
-export const TOKEN_KEY_FILE = p.resolve(LOG_PATH, './token.key')
+export const TOKEN_KEY_FILE = p.resolve(WORKING_DIR, './token.key')
