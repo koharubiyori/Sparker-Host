@@ -14,4 +14,4 @@ SystemService/config
 Sparker.Server.exe
 Sparker.UserService.exe
 GenBase
-.DotSettings.user
+*.DotSettings.user
