@@ -12,9 +12,9 @@ public static class TrayIconManager
 {
   private static TrayIconWithContextMenu trayIcon;
   
-  public static async Task<bool> TryInitialize()
+  public static async Task Initialize()
   {
-    var untilCreated = new TaskCompletionSource<bool>();
+    var untilCreated = new TaskCompletionSource();
     await using var iconRes = Utils.ReadResourceAsStream("icon.ico");
     var icon = new Icon(iconRes);
     trayIcon = new TrayIconWithContextMenu
@@ -34,19 +34,10 @@ public static class TrayIconManager
       }
     };
 
-    trayIcon.SubscribeToCreated((_, _) => untilCreated.SetResult(true));
-    try
-    {
-      trayIcon.Create();
-    }
-    catch (InvalidOperationException e)
-    {
-      Log.Error(e, "Failed to create tray icon");
-      untilCreated.SetResult(false);
-    }
+    trayIcon.SubscribeToCreated((_, _) => untilCreated.SetResult());
+    trayIcon.Create();
     
     await untilCreated.Task;
-    return true;
   }
 
   public static void Clean()

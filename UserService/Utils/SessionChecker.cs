@@ -32,6 +32,33 @@ public static class SessionChecker
     return principal.IsInRole(WindowsBuiltInRole.Administrator);
   }
   
+  public static bool IsWorkstationLocked()
+  {
+    const int UOI_NAME = 2;
+    IntPtr hDesktop = OpenInputDesktop(0, false, 0x100); // READ_CONTROL 权限
+
+    if (hDesktop == IntPtr.Zero)
+      return false;
+
+    try
+    {
+      var name = new byte[256];
+      int needed = 0;
+      bool result = GetUserObjectInformation(hDesktop, UOI_NAME, name, name.Length, ref needed);
+
+      if (!result)
+        return false;
+
+      string desktopName = System.Text.Encoding.ASCII.GetString(name).TrimEnd('\0');
+      
+      return !desktopName.Equals("Default", StringComparison.OrdinalIgnoreCase);
+    }
+    finally
+    {
+      CloseDesktop(hDesktop);
+    }
+  }
+  
   [DllImport("kernel32.dll", SetLastError = true)]
   static extern bool ProcessIdToSessionId(uint dwProcessId, out uint pSessionId);
 
@@ -67,4 +94,19 @@ public static class SessionChecker
   
   [DllImport("kernel32.dll")]
   static extern uint WTSGetActiveConsoleSessionId();
+  
+  [DllImport("user32.dll", SetLastError = true)]
+  private static extern IntPtr OpenInputDesktop(uint dwFlags, bool fInherit, uint dwDesiredAccess);
+
+  [DllImport("user32.dll", SetLastError = true)]
+  private static extern bool CloseDesktop(IntPtr hDesktop);
+
+  [DllImport("user32.dll", SetLastError = true)]
+  private static extern bool GetUserObjectInformation(
+    IntPtr hObj,
+    int nIndex,
+    byte[] pvInfo,
+    int nLength,
+    ref int lpnLengthNeeded
+  );
 }

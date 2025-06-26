@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Serilog;
 using SparkerUserService.LocalServices;
 using SparkerUserService.Pipes;
@@ -11,10 +12,11 @@ public class Worker : BackgroundService
   
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    Task.Run(async () =>
+    if (!SessionChecker.IsWorkstationLocked())
     {
-      if (await TrayIconManager.TryInitialize()) Utils.Utils.WelcomeMessage();
-    });
+      await TrayIconManager.Initialize();
+      Utils.Utils.WelcomeMessage();
+    }
 
     await Task.WhenAll(
       PipeToServer.Instance.RunAsync(),
