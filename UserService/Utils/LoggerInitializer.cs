@@ -13,8 +13,7 @@ public static class LoggerInitializer
     var loggerConfiguration = new LoggerConfiguration()
       .Enrich.WithCaller()
       .WriteTo.File(
-        path: Path.Combine(Constants.LogDirPath, $"user_{currentTimestamp}.log"), 
-        rollingInterval: RollingInterval.Day
+        path: Path.Combine(Constants.LogDirPath, $"user_{currentTimestamp}.log") 
       );
 
 #if DEBUG

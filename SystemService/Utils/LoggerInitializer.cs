@@ -14,7 +14,6 @@ public static class LoggerInitializer
       .Enrich.WithCaller()
       .WriteTo.File(
         path: Path.Combine(Constants.LogDirPath, $"system_{currentTimestamp}.log")
-        // rollingInterval: RollingInterval
       );
 
 #if DEBUG
