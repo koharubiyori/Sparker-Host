@@ -74,3 +74,12 @@ Filename: "sc.exe"; Parameters: "delete ""{#MyAppName}"""; Flags: runhidden wait
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"
+
+[Code]
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  ResultCode: Integer;
+begin
+  Exec('sc.exe', 'stop ' + '{#MyAppName}', '', SW_HIDE, ewWaitUntilTerminated, ResultCode)
+  Result := '';
+end;
