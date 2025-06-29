@@ -71,6 +71,7 @@ Filename: "sc.exe"; Parameters: "start ""{#MyAppName}"""; Flags: runhidden waitu
 [UninstallRun]
 Filename: "sc.exe"; Parameters: "stop ""{#MyAppName}"""; Flags: runhidden waituntilterminated
 Filename: "sc.exe"; Parameters: "delete ""{#MyAppName}"""; Flags: runhidden waituntilterminated
+Filename: "{app}\regasm.exe"; Parameters: """{app}\SparkerCredProvider.dll"" /unregister"; Flags: runhidden waituntilterminated
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"
