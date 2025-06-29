@@ -245,6 +245,8 @@ public static class ChildServiceLauncher
       Log.Information("Child service exited: {Executable} with ExitCode {ExitCode}", executable, exitCode);
       PInvoke.CloseHandle(processInfo.hProcess);
       PInvoke.CloseHandle(processInfo.hThread);
+      if (exitCode != 0 && !_stopFlag) Log.Warning("Child service will be restarted in 3 seconds: {Executable}", executable);
+      Task.Delay(3000).Wait();
     } while (exitCode != 0 && !_stopFlag);
   }
 
