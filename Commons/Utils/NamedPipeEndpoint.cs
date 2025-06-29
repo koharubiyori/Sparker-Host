@@ -66,11 +66,6 @@ public abstract class NamedPipeEndpoint<T>()
           Log.Information("[{PipeLabel}] Connecting...", pipeLabel);
           await client.ConnectAsync();
         }
-
-        Log.Information("[{PipeLabel}] Connected!", pipeLabel);
-        _tokenToBreakReadLoop = new CancellationTokenSource();
-        if (allowWriteBeforeConnection) _untilConnected.SetResult();
-        await OnConnected();
       }
       catch (Exception e)
       {
@@ -80,6 +75,11 @@ public abstract class NamedPipeEndpoint<T>()
         continue;
       }
 
+      Log.Information("[{PipeLabel}] Connected!", pipeLabel);
+      _tokenToBreakReadLoop = new CancellationTokenSource();
+      if (allowWriteBeforeConnection) _untilConnected.SetResult();
+      await OnConnected();
+      
       await ReadLoop();
       await Clean();
     }
@@ -105,8 +105,9 @@ public abstract class NamedPipeEndpoint<T>()
 
     try
     {
-      while (!_tokenToBreakReadLoop!.IsCancellationRequested)
+      while (_pipeStream!.IsConnected && !_tokenToBreakReadLoop!.IsCancellationRequested)
       {
+        // The parameter cancellationToken of ReadAsync() is unreliable! if you want to stop the loop, call Clean()
         var bytesRead = await _pipeStream!.ReadAsync(buffer, _tokenToBreakReadLoop!.Token);
         if (bytesRead == 0)
         {
@@ -118,21 +119,17 @@ public abstract class NamedPipeEndpoint<T>()
         foreach (var message in unpackedMessages)
         {
           HandleMessage(message);
-          await _pipeStream.FlushAsync();
         }
-        
-        Log.Warning("a message loop completed");
       }
     }
     catch (Exception e) when (e is IOException or ObjectDisposedException)
     {
       Log.Error(e, "[{PipeLabel}] The pipe has been closed or broken!", pipeLabel);
     }
-  }
-  
-  private async Task BreakReadLoop()
-  {
-    if (_tokenToBreakReadLoop != null) await _tokenToBreakReadLoop.CancelAsync();
+    catch (OperationCanceledException e)
+    {
+      Log.Error(e, "[{PipeLabel}] Break the read loop manually!", pipeLabel);
+    }
   }
 
   private async Task Clean()
@@ -159,14 +156,15 @@ public abstract class NamedPipeEndpoint<T>()
     var packagedData = StringArrayPacker.Pack(items);
     try
     {
-      await _pipeStream!.WriteAsync(packagedData);
-      await _pipeStream.FlushAsync();
+      using var cts = new CancellationTokenSource(1000);
+      await _pipeStream!.WriteAsync(packagedData, cts.Token);
+      await _pipeStream.FlushAsync(cts.Token);
       return true;
     }
-    catch (IOException e)
+    catch (Exception e) when (e is OperationCanceledException or IOException)
     {
       Log.Error(e, "[{PipeLabel}] Failed to write. The pipe has been closed or broken!", pipeLabel);
-      await BreakReadLoop();
+      await Clean();
       return false;
     }
   }
