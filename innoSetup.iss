@@ -50,7 +50,7 @@ Source: "innoRes\*"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers\{{{#CredentialProviderGuid}}}"; ValueType: string; ValueName: ""; ValueData: "Sparker Credential Provider"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers\{{{#CredentialProviderGuid}}"; ValueType: string; ValueName: ""; ValueData: "Sparker Credential Provider"; Flags: uninsdeletekey
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
