@@ -18,7 +18,7 @@ namespace SparkerCommons.Utils
       {
         foreach (var item in items)
         {
-          byte[] itemBytes = Encoding.UTF8.GetBytes(item ?? string.Empty);
+          var itemBytes = Encoding.UTF8.GetBytes(item ?? string.Empty);
           writer.Write(itemBytes.Length);
           writer.Write(itemBytes);
         }
@@ -37,23 +37,24 @@ namespace SparkerCommons.Utils
       using (var ms = new MemoryStream(data))
       using (var reader = new BinaryReader(ms, Encoding.UTF8))
       {
-        var items = new List<List<string>>() { new List<string>() };
+        var items = new List<List<string>> { new List<string>() };
 
         while (ms.Position < ms.Length)
         {
-          int length = reader.ReadInt32();
+          var length = reader.ReadInt32();
           if (length == 0)
           {
             items.Add(new List<string>());
             continue;
           }
           
-          byte[] itemBytes = reader.ReadBytes(length);
-          string item = Encoding.UTF8.GetString(itemBytes);
+          var itemBytes = reader.ReadBytes(length);
+          var item = Encoding.UTF8.GetString(itemBytes);
           items[items.Count - 1].Add(item);
         }
 
         return items
+          .Where(innerList => innerList.Count > 0)
           .Select(innerList => innerList.ToArray())
           .ToArray();
       }
