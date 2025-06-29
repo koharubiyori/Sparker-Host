@@ -42,7 +42,7 @@ public class LocalServer
 
   public async Task RunAsync(CancellationToken cancellationToken)
   {
-    cancellationToken.Register(() => StopAsync());
+    cancellationToken.Register(() => _ = StopAsync());
     await _app.RunAsync();
   }
 

@@ -272,7 +272,7 @@ public static class ChildServiceLauncher
           Clean();
           InitializeJobObject();
           InitializeUserToken();
-          LaunchServices();
+          _ = LaunchServices();
           _currentActiveSessionId = activeSessionId;
         }
       }

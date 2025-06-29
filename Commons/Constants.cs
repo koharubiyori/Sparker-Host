@@ -65,7 +65,7 @@ namespace SparkerCommons
 #if CRED
     public static readonly string BasePath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 #else
-    public static readonly string BasePath = Path.GetDirectoryName(Environment.ProcessPath);
+    public static readonly string BasePath = Path.GetDirectoryName(Environment.ProcessPath)!;
 #endif
     public static readonly string PreferenceDirPath = Path.Combine(BasePath, PreferenceDirPathName);
     public static readonly string LogDirPath = Path.Combine(BasePath, LogDirPathName);

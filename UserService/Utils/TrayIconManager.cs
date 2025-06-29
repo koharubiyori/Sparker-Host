@@ -29,8 +29,8 @@ public static class TrayIconManager
       {
         new PopupMenuItem(Resources.Strings.Github, (_, _) => OpenGithubUrl()),
         new PopupMenuSeparator(),
-        new PopupMenuItem(Resources.Strings.Restart, (_, _) => PipeToSystemService.Instance.WriteRestart()),
-        new PopupMenuItem(Resources.Strings.Quit, (_, _) => PipeToSystemService.Instance.WriteStop())
+        new PopupMenuItem(Resources.Strings.Restart, (_, _) => { _ = PipeToSystemService.Instance.WriteRestart(); }),
+        new PopupMenuItem(Resources.Strings.Quit, (_, _) => { _ = PipeToSystemService.Instance.WriteStop(); })
       }
     };
 

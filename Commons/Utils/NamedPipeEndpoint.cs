@@ -118,7 +118,7 @@ public abstract class NamedPipeEndpoint<T>()
         var unpackedMessages = StringArrayPacker.Unpack(buffer.ToArray());
         foreach (var message in unpackedMessages)
         {
-          HandleMessage(message);
+          _ = HandleMessage(message);
         }
       }
     }

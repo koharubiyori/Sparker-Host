@@ -67,7 +67,7 @@ namespace SparkerCredProvider.Utils
         {
           if (_cancellationTokenSource.IsCancellationRequested)
           {
-            Logger.Write($"{PipeLabel}: The listener loop was canceled.");
+            Logger.Write($"{PipeLabel}: The listener loop was canceled.\n{ex}");
             break;
           }
 
@@ -222,7 +222,7 @@ namespace SparkerCredProvider.Utils
           }
           catch (Exception ex)
           {
-            Logger.Write($"{PipeLabel}: Error during disconnect.");
+            Logger.Write($"{PipeLabel}: Error during disconnect.\n{ex}");
           }
         }
 

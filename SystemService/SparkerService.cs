@@ -43,11 +43,11 @@ public class SparkerService : ServiceBase
   protected override void OnStart(string[] args)
   {
     Log.Information("Starting SparkerService");
-    PipeToCred.Instance.RunAsync();
-    PipeToServer.Instance.RunAsync();
-    PipeToUserService.Instance.RunAsync();
-    ChildServiceLauncher.RunAsync();
-    _localServer.RunAsync();
+    _ = PipeToCred.Instance.RunAsync();
+    _ = PipeToServer.Instance.RunAsync();
+    _ = PipeToUserService.Instance.RunAsync();
+    _ = ChildServiceLauncher.RunAsync();
+    _ = _localServer.RunAsync();
   }
 
   protected override void OnSessionChange(SessionChangeDescription changeDescription)
