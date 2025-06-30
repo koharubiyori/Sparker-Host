@@ -9,8 +9,6 @@ entity "User Service" as us
 entity "System Service" as ss
 entity "Credential Provider" as cp
 
-' 上至下的组件顺序反转，使箭头自然向下
-
 protocol "Named Pipe" as np_between_cp_ss {
   in : ping
   in : logon
