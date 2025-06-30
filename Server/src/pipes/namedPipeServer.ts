@@ -15,8 +15,6 @@ export abstract class NamedPipeServer {
 
   run() {
     this.server = net.createServer((socket) => {
-      socket.setEncoding('utf8')
-
       socket.on('data', (data) => {
         const messages = StringArrayPacker.unpack(data)
         messages.forEach(item => this.messageHandler(item))

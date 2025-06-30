@@ -1,5 +1,7 @@
 // Encoding and decoding string array composed several (string length(4byte) + string content)
 export class StringArrayPacker {
+  static readonly separator = -1
+
   static pack(...items: (string | null | undefined)[]): Uint8Array {
     if (!items) throw new Error('items is null or undefined')
 
@@ -9,13 +11,13 @@ export class StringArrayPacker {
       const str = item ?? ''
       const strBuffer = Buffer.from(str, 'utf8')
       const lengthBuffer = Buffer.alloc(4)
-      lengthBuffer.writeUInt32LE(strBuffer.length, 0)
+      lengthBuffer.writeInt32LE(strBuffer.length, 0)
       buffers.push(lengthBuffer, strBuffer)
     }
 
-    const divider = Buffer.alloc(4)
-    divider.writeUInt32LE(0)
-    buffers.push(divider)
+    const separator = Buffer.alloc(4)
+    separator.writeInt32LE(StringArrayPacker.separator)
+    buffers.push(separator)
 
     return Buffer.concat(buffers)
   }
@@ -32,10 +34,10 @@ export class StringArrayPacker {
         throw new Error('Invalid data format: incomplete length prefix.')
       }
 
-      const length = buffer.readUInt32LE(offset)
+      const length = buffer.readInt32LE(offset)
       offset += 4
 
-      if (length === 0) {
+      if (length === StringArrayPacker.separator) {
         if (offset < buffer.length) items.push([])
         continue
       }

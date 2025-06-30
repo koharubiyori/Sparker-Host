@@ -9,6 +9,8 @@ namespace SparkerCommons.Utils
   // Encoding and decoding string array composed several (string length(4byte) + string content)
   public static class StringArrayPacker
   {
+    private const int Separator = -1;
+    
     public static byte[] Pack(params string[] items)
     {
       if (items == null) throw new ArgumentNullException(nameof(items));
@@ -23,7 +25,7 @@ namespace SparkerCommons.Utils
           writer.Write(itemBytes);
         }
 
-        writer.Write(0);
+        writer.Write(Separator);
         writer.Flush();
         return ms.ToArray();
       }
@@ -42,7 +44,7 @@ namespace SparkerCommons.Utils
         while (ms.Position < ms.Length)
         {
           var length = reader.ReadInt32();
-          if (length == 0)
+          if (length == -1)
           {
             items.Add(new List<string>());
             continue;
