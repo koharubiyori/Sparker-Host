@@ -1,6 +1,8 @@
 logs
 .history
 innoOut
+.vscode
+
 
 # Commons | CredProvider | SystemService
 bin/
