@@ -20,9 +20,9 @@ public class PipeToCred() : NamedPipeEndpoint<NamedPipeClientStream>(Constants.C
     return await WriteHeartbeat();
   }
   
-  public async Task<bool> WriteLogonInfo(string username, string password)
+  public async Task<bool> WriteLogonInfo(string username, string domain, string password)
   {
     Log.Information("[{PipeLabel}] Send logonInfo!", pipeLabel);
-    return await Write(Constants.CredPipeMessageType.In.Logon, username, password);
+    return await Write(Constants.CredPipeMessageType.In.Logon, username, domain, password);
   }
 }

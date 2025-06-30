@@ -34,6 +34,7 @@ interface PairReq {
   pairingCode: string,
   sessionId: string
   username: string
+  domain: string
   password: string
 }
 
@@ -47,11 +48,13 @@ const pair: RequestHandler<PairReq, PairRes> = async (ctx, next) => {
     pairingCode: JsonType.string.required,
     sessionId: JsonType.string.required,
     username: JsonType.string.required,
+    domain: JsonType.string.required,
     password: JsonType.string.required
   })
 
   const { result } = await grpcClients.hostInfo.isValidCredential({
     username: body.username,
+    domain: body.domain,
     password: body.password
   })
 
@@ -66,6 +69,7 @@ const pair: RequestHandler<PairReq, PairRes> = async (ctx, next) => {
     const token = await Tokener.sign({ 
       deviceId: body.deviceId,
       username: body.username,
+      domain: body.domain,
       password: body.password
     })
     DeviceManager.addDevice({ id: body.deviceId })

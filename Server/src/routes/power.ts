@@ -29,8 +29,8 @@ const sleep: RequestHandlerToGrpc<SleepRequest, {}> = async (ctx, next) => {
 
 const unlock: RequestHandlerToGrpc<{}, UnlockResponse> = async (ctx, next) => {
   const token = ctx.request.headers['authorization']!!
-  const { username, password } = await Tokener.decode(token)
-  ctx.body = createResponse.success(await grpcClients.power.unlock({ username, password }))
+  const { username, password, domain } = await Tokener.decode(token)
+  ctx.body = createResponse.success(await grpcClients.power.unlock({ username, domain, password }))
   await next()
 }
 

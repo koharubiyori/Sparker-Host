@@ -26,7 +26,7 @@ public class PowerService : Grpc.PowerService.PowerServiceBase
 
   public override async Task<UnlockResponse> Unlock(UnlockRequest request, ServerCallContext context)
   {
-    var result = await PowerManager.Unlock(request.Username, request.Password);
+    var result = await PowerManager.Unlock(request.Username, request.Domain, request.Password);
     if (!result) return new UnlockResponse { Success = false };
     var success = await Task.Run(async () =>
     {

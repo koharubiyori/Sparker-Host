@@ -175,8 +175,9 @@ namespace SparkerCredProvider.Utils
         {
           case Constants.CredPipeMessageType.In.Logon:
             var username = message[1];
-            var password = message[2];
-            _onUserInfoReceived?.Invoke(string.Format("{0}\\{1}", Environment.MachineName, username), password);
+            var domain = message[2].Length == 0 ? Environment.MachineName : message[2];
+            var password = message[3];
+            _onUserInfoReceived?.Invoke($"{domain}\\{username}", password);
             break;
           case Constants.CredPipeMessageType.In.Ping:
             return WritePongAsync();

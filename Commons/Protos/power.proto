@@ -25,7 +25,8 @@ message SleepRequest {
 
 message UnlockRequest {
   string username = 1;
-  string password = 2;
+  string domain = 2;
+  string password = 3;
 }
 
 message UnlockResponse {

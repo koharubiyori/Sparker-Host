@@ -31,5 +31,6 @@ export class Tokener {
 export interface DecodedToken {
   deviceId: string
   username: string
+  domain: string
   password: string
 }

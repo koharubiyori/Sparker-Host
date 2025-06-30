@@ -13,11 +13,11 @@ public static class Utils
     return new Win32Exception($"{methodName} failed: {win32Message}");
   }
 
-  public static int IsValidCredential(string username, string password)
+  public static int IsValidCredential(string username, string domain, string password)
   {
     var result = PInvoke.LogonUser(
       username,
-      ".",
+      domain.Length == 0 ? "." : domain,
       password,
       LOGON32_LOGON.LOGON32_LOGON_INTERACTIVE,
       LOGON32_PROVIDER.LOGON32_PROVIDER_DEFAULT,

@@ -41,9 +41,9 @@ public static class PowerManager
     PInvoke.SetSuspendState(hibernate, true, true);
   }
 
-  public static Task<bool> Unlock(string username, string password)
+  public static Task<bool> Unlock(string username, string domain, string password)
   {
-    return PipeToCred.Instance.WriteLogonInfo(username, password);
+    return PipeToCred.Instance.WriteLogonInfo(username, domain, password);
   }
   
   public static bool IsHibernateEnabled()
