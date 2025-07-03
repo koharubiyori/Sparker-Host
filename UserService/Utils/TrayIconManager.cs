@@ -1,10 +1,9 @@
 using System.Diagnostics;
 using System.Drawing;
-using System.ServiceProcess;
+using Commons;
 using H.NotifyIcon.Core;
-using Serilog;
-using SparkerCommons;
 using SparkerUserService.Pipes;
+using SparkerUserService.Resources;
 
 namespace SparkerUserService.Utils;
 
@@ -27,10 +26,10 @@ public static class TrayIconManager
     {
       Items =
       {
-        new PopupMenuItem(Resources.Strings.Github, (_, _) => OpenGithubUrl()),
+        new PopupMenuItem(Strings.Github, (_, _) => OpenGithubUrl()),
         new PopupMenuSeparator(),
-        new PopupMenuItem(Resources.Strings.Restart, (_, _) => { _ = PipeToSystemService.Instance.WriteRestart(); }),
-        new PopupMenuItem(Resources.Strings.Quit, (_, _) => { _ = PipeToSystemService.Instance.WriteStop(); })
+        new PopupMenuItem(Strings.Restart, (_, _) => { _ = PipeToSystemService.Instance.WriteRestart(); }),
+        new PopupMenuItem(Strings.Quit, (_, _) => { _ = PipeToSystemService.Instance.WriteStop(); })
       }
     };
 

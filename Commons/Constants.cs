@@ -1,7 +1,7 @@
+using System;
 using System.IO;
-using Microsoft.Win32;
 
-namespace SparkerCommons
+namespace Commons
 {
   public static class Constants
   {
@@ -62,7 +62,7 @@ namespace SparkerCommons
     public static readonly string UserServiceExePath = Path.Combine(BasePath, UserServiceExeName);
 #else
     public const bool Debug = false;
-#if CRED
+#if NET48
     public static readonly string BasePath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 #else
     public static readonly string BasePath = Path.GetDirectoryName(Environment.ProcessPath)!;

@@ -1,7 +1,7 @@
 using System.IO.Pipes;
+using Commons;
 using Serilog;
-using SparkerCommons;
-using SparkerCommons.Utils;
+using ServiceShared.Utils;
 using SparkerSystemService.LocalServices;
 
 namespace SparkerSystemService.Pipes;

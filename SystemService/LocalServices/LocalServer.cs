@@ -1,11 +1,11 @@
 using System.Net;
 using System.Net.Sockets;
+using Commons;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
-using SparkerCommons;
 using SparkerSystemService.LocalServices.Services;
 
 namespace SparkerSystemService.LocalServices;
@@ -44,15 +44,21 @@ public class LocalServer
     return (ulong)_tcpListener.Server.Handle.ToInt64();
   }
 
-  public async Task RunAsync()
+  public async Task RunAsync(CancellationToken stoppingToken = default)
   {
-    await _app.RunAsync();
+    try
+    {
+      await _app.RunAsync(stoppingToken);
+    }
+    finally
+    {
+      await StopAsync();
+    }
   }
 
-  public async Task StopAsync()
+  private async Task StopAsync()
   {
     _tcpListener.Stop();
-    _tcpListener.Dispose();
     await _app.StopAsync();
   }
 }

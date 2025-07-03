@@ -2,17 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+        <OutputType>Library</OutputType>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
-        <UserSecretsId>dotnet-SparkerSystemService-26a5c319-25bf-4a34-919b-aa91d3597e4b</UserSecretsId>
+<!--        <UserSecretsId>dotnet-SparkerSystemService-26a5c319-25bf-4a34-919b-aa91d3597e4b</UserSecretsId>-->
         <RootNamespace>SparkerSystemService</RootNamespace>
         <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
         <EnableSourceGeneration>true</EnableSourceGeneration>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
-        <PublishAot>true</PublishAot>
+<!--        <ApplicationManifest>app.manifest</ApplicationManifest>-->
+<!--        <PublishAot>true</PublishAot>-->
         <AssemblyName>Sparker.SystemService</AssemblyName>
     </PropertyGroup>
 
@@ -45,21 +46,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="logs\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="logs\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="logs\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="logs\**" />
+        <ProjectReference Include="..\ServiceShared\ServiceShared.csproj" />
     </ItemGroup>
     
-
     <Import Project="..\Commons\Commons.projitems" Label="Shared" />
 </Project>

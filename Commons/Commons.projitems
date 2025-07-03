@@ -3,27 +3,18 @@
   <PropertyGroup>
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>a254cd8e-b2c7-493e-903e-0e4e5f513bf7</SharedGUID>
+    <SharedGUID>f844e578-ea3b-4c89-9b06-2b0881dfb09a</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>Commons</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\NamedPipeEndpoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\StringArrayPacker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="$(MSBuildThisFileDirectory)Protos\hostInfo.proto">
-      <Generator>MSBuild:Compile</Generator>
-    </Protobuf>
-    <Protobuf Include="$(MSBuildThisFileDirectory)Protos\power.proto">
-      <Generator>MSBuild:Compile</Generator>
-    </Protobuf>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Protos\userUtil.proto" />
     <Content Include="$(MSBuildThisFileDirectory)Protos\hostInfo.proto" />
     <Content Include="$(MSBuildThisFileDirectory)Protos\power.proto" />
+    <Content Include="$(MSBuildThisFileDirectory)Protos\userUtil.proto" />
   </ItemGroup>
 </Project>

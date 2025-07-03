@@ -1,6 +1,6 @@
 using System.IO.Pipes;
-using SparkerCommons;
-using SparkerCommons.Utils;
+using Commons;
+using ServiceShared.Utils;
 
 namespace SparkerUserService.Pipes;
 

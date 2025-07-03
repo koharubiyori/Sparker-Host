@@ -2,13 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+        <OutputType>Library</OutputType>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>SparkerUserService</RootNamespace>
         <InvariantGlobalization>true</InvariantGlobalization>
-        <UserSecretsId>dotnet-UserService-5e4b0be8-384f-44f6-8ee1-e867c13d6037</UserSecretsId>
+<!--        <UserSecretsId>dotnet-UserService-5e4b0be8-384f-44f6-8ee1-e867c13d6037</UserSecretsId>-->
         <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-        <PublishAot>true</PublishAot>
+<!--        <PublishAot>true</PublishAot>-->
         <AssemblyName>Sparker.UserService</AssemblyName>
         <GenerateResourceDesignerFiles>true</GenerateResourceDesignerFiles>
     </PropertyGroup>
@@ -60,6 +61,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Strings.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ServiceShared\ServiceShared.csproj" />
     </ItemGroup>
 
     <Import Project="..\Commons\Commons.projitems" Label="Shared" />

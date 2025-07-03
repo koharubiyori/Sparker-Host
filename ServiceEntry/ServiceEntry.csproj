@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <ItemGroup>
+      <ProjectReference Include="..\SystemService\SystemService.csproj" />
+      <ProjectReference Include="..\ServiceShared\ServiceShared.csproj" />
+      <ProjectReference Include="..\UserService\UserService.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+        <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog" Version="4.2.0" />
+    </ItemGroup>
+</Project>

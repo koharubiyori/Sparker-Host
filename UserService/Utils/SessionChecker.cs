@@ -35,7 +35,7 @@ public static class SessionChecker
   public static bool IsWorkstationLocked()
   {
     const int UOI_NAME = 2;
-    IntPtr hDesktop = OpenInputDesktop(0, false, 0x100); // READ_CONTROL 权限
+    IntPtr hDesktop = OpenInputDesktop(0, false, 0x100); // READ_CONTROL permission
 
     if (hDesktop == IntPtr.Zero)
       return false;

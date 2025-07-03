@@ -5,9 +5,9 @@ using Windows.Win32.Foundation;
 using Windows.Win32.Security;
 using Windows.Win32.System.JobObjects;
 using Windows.Win32.System.Threading;
+using Commons;
 using Serilog;
 using SparkerSystemService.LocalServices;
-using Constants = SparkerCommons.Constants;
 
 namespace SparkerSystemService.Utils;
 
@@ -16,17 +16,18 @@ public static class ChildServiceLauncher
   private static HANDLE _jobHandle;
   private static HANDLE _userToken;
   private static uint _currentActiveSessionId;
-  private static bool _stopFlag;
+  private static CancellationTokenSource? _stoppingCts;
 
-  public static async Task RunAsync()
+  public static async Task RunAsync(CancellationToken stoppingToken = default)
   {
-    _stopFlag = false;
+    _stoppingCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
     await LaunchServicesWithSessionWatcher();
+    _stoppingCts.Token.ThrowIfCancellationRequested();
   }
 
   public static void Stop()
   {
-    _stopFlag = true;
+    _stoppingCts?.Cancel();
     Clean();
   }
 
@@ -189,17 +190,17 @@ public static class ChildServiceLauncher
       if (!result) throw Utils.CreateWin32ExceptionByMethodName("UpdateProcThreadAttribute");
 
       // Create Process
-      var cmdChars = arguments.ToCharArray();
       processInfo = new PROCESS_INFORMATION();
 
-      fixed (char* pExePath = executable)
-      fixed (char* pCmdLine = cmdChars)
+      var commandLine = $"\"{executable}\" {arguments}";
+      
+      fixed (char* pCommandLine = commandLine)
       fixed (PROCESS_INFORMATION* pProcessInfo = &processInfo)
       {
         result = Native.CreateProcessAsUserW(
           userToken,
-          pExePath,
-          pCmdLine,
+          null,
+          pCommandLine,
           null,
           null,
           bInheritHandles: true,
@@ -239,22 +240,22 @@ public static class ChildServiceLauncher
       Log.Information("Child service starting: {Executable}", executable);
       LaunchInJob(userToken, executable, arguments, out var processInfo);
       Log.Information("Child service started: {ExitCode}", executable);
-      PInvoke.WaitForSingleObject(processInfo.hProcess, UInt32.MaxValue);
+      PInvoke.WaitForSingleObject(processInfo.hProcess, uint.MaxValue);
       var ok = PInvoke.GetExitCodeProcess(processInfo.hProcess, &exitCode);
       if (!ok) exitCode = 1;
       Log.Information("Child service exited: {Executable} with ExitCode {ExitCode}", executable, exitCode);
       PInvoke.CloseHandle(processInfo.hProcess);
       PInvoke.CloseHandle(processInfo.hThread);
-      if (exitCode != 0 && !_stopFlag) Log.Warning("Child service will be restarted in 3 seconds: {Executable}", executable);
+      if (exitCode != 0 && !_stoppingCts!.IsCancellationRequested) Log.Warning("Child service will be restarted in 3 seconds: {Executable}", executable);
       Task.Delay(3000).Wait();
-    } while (exitCode != 0 && !_stopFlag);
+    } while (exitCode != 0 && !_stoppingCts!.IsCancellationRequested);
   }
 
   private static async Task LaunchServices()
   {
     await Task.WhenAll(
       Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.ServerExePath, $"{LocalServer.Port}")),
-      Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.UserServiceExePath))
+      Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Environment.ProcessPath!, "user"))
     );
   }
 
@@ -284,6 +285,6 @@ public static class ChildServiceLauncher
       {
         await Task.Delay(3000);
       }
-    } while (!_stopFlag);
+    } while (!_stoppingCts!.IsCancellationRequested);
   }
 }

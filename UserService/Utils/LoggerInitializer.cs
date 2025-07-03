@@ -1,7 +1,6 @@
+using Commons;
 using Serilog;
 using Serilog.Enrichers.WithCaller;
-using Serilog.Sinks.SystemConsole.Themes;
-using SparkerCommons;
 
 namespace SparkerUserService.Utils;
 

@@ -1,6 +1,6 @@
 using System.IO.Pipes;
-using SparkerCommons;
-using SparkerCommons.Utils;
+using Commons;
+using ServiceShared.Utils;
 
 namespace SparkerSystemService.Pipes;
 
@@ -17,11 +17,11 @@ public class PipeToUserService()
     switch (eventType)
     {
       case Constants.SystemServicePipeEvents.In.Restart:
-        SparkerService.Clean();
+        SystemServiceModule.Clean();
         Environment.FailFast("Manually triggering the service to restart.");
         break;
       case Constants.SystemServicePipeEvents.In.Stop:
-        SparkerService.Stop();
+        SystemServiceModule.Stop();
         break;
       
     }

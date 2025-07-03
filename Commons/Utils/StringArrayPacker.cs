@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SparkerCommons.Utils
+namespace Commons.Utils
 {
   // Encoding and decoding string array composed several (string length(4byte) + string content)
   public static class StringArrayPacker
