@@ -16,6 +16,6 @@ public class PipeToServer() : NamedPipeEndpoint<NamedPipeClientStream>(Constants
   
   protected override async Task OnConnected()
   {
-    if (LocalHttpServer.Port != 0) await WritePortReport(LocalHttpServer.Port);
+    if (LocalHttpServer.LocalHttpServerService.Port != 0) await WritePortReport(LocalHttpServer.LocalHttpServerService.Port);
   }
 }

@@ -2,22 +2,21 @@ using System.Net;
 using System.Net.Sockets;
 using Commons;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using ServiceShared.Utils;
-using SparkerSystemService.LocalServices.Services;
+using SparkerSystemService.LocalHttpServer.Services;
 
-namespace SparkerSystemService.LocalServices;
+namespace SparkerSystemService.LocalHttpServer;
 
-public class LocalHttpServer : BackgroundService
+public class LocalHttpServerService : BackgroundService
 {
   private readonly WebApplication _app;
   private TcpListener _tcpListener; // Hold the reference to prevent from GC
   public static int Port { get; private set; }
 
-  public LocalHttpServer()
+  public LocalHttpServerService()
   {
     var builder = WebApplication.CreateSlimBuilder();
     var logger = LoggerInitializer.CreateLoggerConfiguration("system", true);

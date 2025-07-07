@@ -7,7 +7,7 @@ using Windows.Win32.System.JobObjects;
 using Windows.Win32.System.Threading;
 using Commons;
 using Serilog;
-using SparkerSystemService.LocalServices;
+using SparkerSystemService.LocalHttpServer;
 
 namespace SparkerSystemService.Utils;
 
@@ -255,7 +255,7 @@ public class ChildServiceLauncher : BackgroundService
   private async Task LaunchServices()
   {
     await Task.WhenAll(
-      Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.ServerExePath, $"{LocalHttpServer.Port}")),
+      Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.ServerExePath, $"{LocalHttpServerService.Port}")),
       Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Environment.ProcessPath!, "user"))
     );
   }

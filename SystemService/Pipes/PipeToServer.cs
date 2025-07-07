@@ -2,7 +2,7 @@ using System.IO.Pipes;
 using Commons;
 using Serilog;
 using ServiceShared.Utils;
-using SparkerSystemService.LocalServices;
+using SparkerSystemService.LocalHttpServer;
 
 namespace SparkerSystemService.Pipes;
 
@@ -10,7 +10,7 @@ public class PipeToServer() : NamedPipeEndpoint<NamedPipeClientStream>(Constants
 {
   protected override async Task OnConnected()
   {
-    if (LocalHttpServer.Port != 0) await WritePortReport(LocalHttpServer.Port);
+    if (LocalHttpServerService.Port != 0) await WritePortReport(LocalHttpServerService.Port);
   }
 
   public async Task WritePortReport(int port)

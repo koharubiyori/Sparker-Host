@@ -3,7 +3,7 @@ using Grpc.Core;
 using SparkerSystemService.Grpc;
 using SparkerSystemService.Utils;
 
-namespace SparkerSystemService.LocalServices.Services;
+namespace SparkerSystemService.LocalHttpServer.Services;
 
 public class PowerService : Grpc.PowerService.PowerServiceBase
 {

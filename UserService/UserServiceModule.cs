@@ -16,13 +16,13 @@ public static class ServiceCollectionExtensions
     return collection
         .AddOpenedHostedService<PipeToServer>()
         .AddOpenedHostedService<PipeToSystemService>()
-        .AddHostedService<LocalHttpServer>()
+        .AddHostedService<LocalHttpServer.LocalHttpServerService>()
         .AddHostedService<UserServiceModule>()
       ;
   }
 }
 
-public class UserServiceModule : SessionChangeAwareService
+public class UserServiceModule : BackgroundService
 {
 
   public static void Initialize()

@@ -3,7 +3,7 @@ using System.ServiceProcess;
 using Serilog;
 using ServiceShared;
 using ServiceShared.Utils;
-using SparkerSystemService.LocalServices;
+using SparkerSystemService.LocalHttpServer;
 using SparkerSystemService.Pipes;
 using SparkerSystemService.Utils;
 
@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
       .AddOpenedHostedService<PipeToCred>()
       .AddOpenedHostedService<PipeToServer>()
       .AddOpenedHostedService<PipeToUserService>()
-      .AddHostedService<LocalHttpServer>()
+      .AddHostedService<LocalHttpServerService>()
       .AddHostedService<ChildServiceLauncher>()
       .AddHostedService<SystemServiceModule>()
     ;
