@@ -7,8 +7,6 @@ namespace SparkerSystemService.Pipes;
 
 public class PipeToCred() : NamedPipeEndpoint<NamedPipeClientStream>(Constants.CredPipeName, "PipeToCred", false)
 {
-  public static PipeToCred Instance { get; } = new(); 
-  
   private async Task<bool> WriteHeartbeat()
   {
     Log.Information("[{PipeLabel}] Send heartbeat!", pipeLabel);

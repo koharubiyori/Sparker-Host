@@ -1,25 +1,30 @@
 using Commons;
 using Serilog;
 using Serilog.Enrichers.WithCaller;
+using Serilog.Sinks.SystemConsole.Themes;
 
-namespace SparkerUserService.Utils;
+namespace ServiceShared.Utils;
 
 public static class LoggerInitializer
 {
-  public static void Initialize()
+  public static ILogger CreateLoggerConfiguration(string logFilePrefix, bool withWebHostLabel = false)
   {
     var currentTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() / 60;
     var loggerConfiguration = new LoggerConfiguration()
       .Enrich.WithCaller()
       .WriteTo.File(
-        path: Path.Combine(Constants.LogDirPath, $"user_{currentTimestamp}.log") 
+        path: Path.Combine(Constants.LogDirPath, $"{logFilePrefix}_{currentTimestamp}.log")
       );
+    var webHostLabel = withWebHostLabel ? " ({WebHostLabel})" : "";
+    var outputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}]" + webHostLabel + " {Message} {Caller}{NewLine}{Exception}";
 
+    if (withWebHostLabel) loggerConfiguration.Enrich.WithProperty("WebHostLabel", "WebHost");
+    
 #if DEBUG
     loggerConfiguration
       .MinimumLevel.Debug()
       .WriteTo.Console(
-        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message} {Caller}{NewLine}{Exception}",
+        outputTemplate: outputTemplate,
         theme: AnsiConsoleTheme.Code, 
         applyThemeToRedirectedOutput: true
       );
@@ -27,9 +32,14 @@ public static class LoggerInitializer
     // loggerConfiguration
     //   .MinimumLevel.Error();
 #endif
-  
-    Log.Logger = loggerConfiguration.CreateLogger();
-  
+
+    return loggerConfiguration.CreateLogger();
+  }
+
+  public static void InitializeGlobalLogger(ILogger logger)
+  {
+    Log.Logger = logger;
+    
     AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) =>
     {
       if (e.ExceptionObject is Exception exception)
@@ -40,7 +50,7 @@ public static class LoggerInitializer
     
     TaskScheduler.UnobservedTaskException += (s, e) =>
     {
-      Log.Error(e.Exception, "Unhandled exception");
+      Log.Error(e.Exception, "Unobserved exception");
       e.SetObserved();
     };
   }

@@ -4,6 +4,10 @@ using ServiceShared;
 using SparkerSystemService;
 using SparkerUserService;
 
+#if !DEBUG
+Console.WriteLine("Logging is disabled in release mode.");
+#endif
+
 var moduleToRun = args[0];   // system or user
 var isSystemModule = moduleToRun == "system";
 
@@ -20,13 +24,13 @@ builder.Services
   {
     options.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.None);
   })
-  .AddSingleton<WindowsServiceAdapter>(sp => new WindowsServiceAdapter(sp.GetRequiredService<IHost>(), "Sparker Service"))
-  .AddHostedService<CompositeBackgroundService>();
+  .AddSingleton<WindowsServiceAdapter>(sp =>
+    new WindowsServiceAdapter(sp.GetRequiredService<IHost>(), "Sparker Service"));
 
 if (isSystemModule)
-  builder.Services.AddSingleton<IServiceModule, SystemServiceModule>();
+  builder.Services.AddSparkerSystemService();
 else
-  builder.Services.AddSingleton<IServiceModule, UserServiceModule>();
+  builder.Services.AddSparkerUserService();
 
 var host = builder.Build();
 

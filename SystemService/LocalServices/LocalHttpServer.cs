@@ -6,21 +6,23 @@ using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
+using ServiceShared.Utils;
 using SparkerSystemService.LocalServices.Services;
 
 namespace SparkerSystemService.LocalServices;
 
-public class LocalServer
+public class LocalHttpServer : BackgroundService
 {
   private readonly WebApplication _app;
   private TcpListener _tcpListener; // Hold the reference to prevent from GC
   public static int Port { get; private set; }
 
-  public LocalServer()
+  public LocalHttpServer()
   {
     var builder = WebApplication.CreateSlimBuilder();
+    var logger = LoggerInitializer.CreateLoggerConfiguration("system", true);
     builder.Services
-      .AddSerilog()
+      .AddSerilog(logger)
       .AddHostedService<LifeHostedService>();
     builder.Services.AddGrpc(); 
     builder.WebHost.ConfigureKestrel(options =>
@@ -44,7 +46,7 @@ public class LocalServer
     return (ulong)_tcpListener.Server.Handle.ToInt64();
   }
 
-  public async Task RunAsync(CancellationToken stoppingToken = default)
+  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
     try
     {

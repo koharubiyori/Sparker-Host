@@ -1,23 +1,41 @@
+using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using Serilog;
 using ServiceShared;
+using ServiceShared.Utils;
 using SparkerSystemService.LocalServices;
 using SparkerSystemService.Pipes;
 using SparkerSystemService.Utils;
 
 namespace SparkerSystemService;
 
-public class SystemServiceModule : IServiceModule
+public static class ServiceCollectionExtensions
+{
+  public static IServiceCollection AddSparkerSystemService(this IServiceCollection collection)
+  {
+    return collection
+      .AddOpenedHostedService<PipeToCred>()
+      .AddOpenedHostedService<PipeToServer>()
+      .AddOpenedHostedService<PipeToUserService>()
+      .AddHostedService<LocalHttpServer>()
+      .AddHostedService<ChildServiceLauncher>()
+      .AddHostedService<SystemServiceModule>()
+    ;
+  }
+}
+
+public class SystemServiceModule : SessionChangeAwareService
 {
   private static CancellationTokenSource? _stoppingCts;
 
   private static IHost _host;
-  private readonly LocalServer _localServer = new();
-  
   
   public SystemServiceModule(IHost host)
   {
     _host = host;
+    PipeSingletons.PipeToCred = _host.Services.GetRequiredService<PipeToCred>();
+    PipeSingletons.PipeToServer = _host.Services.GetRequiredService<PipeToServer>();
+    PipeSingletons.PipeToUserService = _host.Services.GetRequiredService<PipeToUserService>();
   }
   
   public static void Clean()
@@ -32,25 +50,17 @@ public class SystemServiceModule : IServiceModule
 
   public static void Initialize()
   {
-    LoggerInitializer.Initialize();
+    var logger = LoggerInitializer.CreateLoggerConfiguration("system");
+    LoggerInitializer.InitializeGlobalLogger(logger);
   }
-  
-  public async Task ExecuteAsync(CancellationToken stoppingToken = default)
+
+  protected override Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    Log.Information("Starting SparkerService");
-    _stoppingCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
-    await Task.WhenAll(
-      PipeToCred.Instance.RunAsync(stoppingToken),
-      PipeToServer.Instance.RunAsync(stoppingToken),
-      PipeToUserService.Instance.RunAsync(stoppingToken), 
-#if !DEBUG
-      ChildServiceLauncher.RunAsync(stoppingToken),
-#endif
-      _localServer.RunAsync(stoppingToken)
-    );
+     Log.Information("Starting SparkerService");
+     return Task.CompletedTask;
   }
   
-  public void OnSessionChange(SessionChangeDescription changeDescription)
+  public override void OnSessionChange(SessionChangeDescription changeDescription)
   {
     switch (changeDescription.Reason)
     {

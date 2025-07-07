@@ -20,7 +20,7 @@ public static class PowerManager
 
   public static async Task<bool> GetLocked()
   {
-    _locked ??= await PipeToCred.Instance.IsCredPipeServerRunning();
+    _locked ??= await PipeSingletons.PipeToCred.IsCredPipeServerRunning();
     return _locked.Value;
   }
 
@@ -43,7 +43,7 @@ public static class PowerManager
 
   public static Task<bool> Unlock(string username, string domain, string password)
   {
-    return PipeToCred.Instance.WriteLogonInfo(username, domain, password);
+    return PipeSingletons.PipeToCred.WriteLogonInfo(username, domain, password);
   }
   
   public static bool IsHibernateEnabled()

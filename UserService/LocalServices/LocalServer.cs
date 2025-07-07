@@ -5,51 +5,60 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
+using ServiceShared.Utils;
 using SparkerUserService.LocalServices.Services;
 
 namespace SparkerUserService.LocalServices;
 
-public class LocalServer
+public class LocalHttpServer : BackgroundService
 {
   private readonly WebApplication _app;
   private TcpListener _tcpListener; // Hold the reference to prevent from GC
   public static int Port { get; private set; }
 
-  public LocalServer()
+  public LocalHttpServer()
   {
     var builder = WebApplication.CreateSlimBuilder();
+    var logger = LoggerInitializer.CreateLoggerConfiguration("system", true);
     builder.Services
-      .AddSerilog()
+      .AddSerilog(logger)
       .AddHostedService<LifeHostedService>();
-    builder.Services.AddGrpc();
+    builder.Services.AddGrpc(); 
     builder.WebHost.ConfigureKestrel(options =>
     {
-      options.ListenHandle(CreateTcpListenerHandle(),
-        listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
+      options.ListenHandle(CreateTcpListenerHandle(), listenOptions =>
+      {
+        listenOptions.Protocols = HttpProtocols.Http2;
+      });
     });
-
+    
     _app = builder.Build();
     _app.MapGrpcService<UserUtilService>();
   }
-
+  
   private ulong CreateTcpListenerHandle()
   {
-    _tcpListener = new TcpListener(IPAddress.Loopback, Constants.Debug ? Constants.TestUserServicePort : 0);
+    _tcpListener = new TcpListener(IPAddress.Loopback, Constants.Debug ? Constants.TestSystemServicePort : 0);
     _tcpListener.Start();
     Port = ((IPEndPoint)_tcpListener.LocalEndpoint).Port;
     return (ulong)_tcpListener.Server.Handle.ToInt64();
   }
 
-  public async Task RunAsync(CancellationToken cancellationToken)
+  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    cancellationToken.Register(() => _ = StopAsync());
-    await _app.RunAsync();
+    try
+    {
+      await _app.RunAsync(stoppingToken);
+    }
+    finally
+    {
+      await StopAsync();
+    }
   }
 
   private async Task StopAsync()
   {
     _tcpListener.Stop();
-    _tcpListener.Dispose();
     await _app.StopAsync();
   }
 }

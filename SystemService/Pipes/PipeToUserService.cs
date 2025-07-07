@@ -7,8 +7,6 @@ namespace SparkerSystemService.Pipes;
 public class PipeToUserService()
   : NamedPipeEndpoint<NamedPipeServerStream>(Constants.SystemServicePipeName, "PipeToUserService")
 {
-  public static PipeToUserService Instance { get; } = new();
-  
   protected override async Task HandleMessage(string[] message)
   {
     await base.HandleMessage(message);

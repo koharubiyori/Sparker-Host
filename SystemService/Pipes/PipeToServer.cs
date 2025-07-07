@@ -8,11 +8,9 @@ namespace SparkerSystemService.Pipes;
 
 public class PipeToServer() : NamedPipeEndpoint<NamedPipeClientStream>(Constants.ServerPipeName, "PipeToServer")
 {
-  public static PipeToServer Instance { get; } = new();
-
   protected override async Task OnConnected()
   {
-    if (LocalServer.Port != 0) await WritePortReport(LocalServer.Port);
+    if (LocalHttpServer.Port != 0) await WritePortReport(LocalHttpServer.Port);
   }
 
   public async Task WritePortReport(int port)

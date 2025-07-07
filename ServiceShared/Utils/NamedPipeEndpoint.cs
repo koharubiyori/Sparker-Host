@@ -1,10 +1,11 @@
 using System.IO.Pipes;
 using Commons.Utils;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace ServiceShared.Utils;
 
-public abstract class NamedPipeEndpoint<T>() : IDisposable
+public abstract class NamedPipeEndpoint<T>() : BackgroundService, IDisposable
   where T : PipeStream
 {
   protected readonly string pipeName;
@@ -32,7 +33,7 @@ public abstract class NamedPipeEndpoint<T>() : IDisposable
     this.maxMessageLength = maxMessageLength;
   }
 
-  public async Task RunAsync(CancellationToken stoppingToken = default)
+  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
     _stoppingCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
     while (!_stoppingCts.IsCancellationRequested)

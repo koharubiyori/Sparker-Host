@@ -11,27 +11,28 @@ using SparkerSystemService.LocalServices;
 
 namespace SparkerSystemService.Utils;
 
-public static class ChildServiceLauncher
+public class ChildServiceLauncher : BackgroundService
 {
-  private static HANDLE _jobHandle;
-  private static HANDLE _userToken;
-  private static uint _currentActiveSessionId;
-  private static CancellationTokenSource? _stoppingCts;
+  private HANDLE _jobHandle;
+  private HANDLE _userToken;
+  private uint _currentActiveSessionId;
+  private CancellationTokenSource? _stoppingCts;
 
-  public static async Task RunAsync(CancellationToken stoppingToken = default)
+  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
     _stoppingCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
     await LaunchServicesWithSessionWatcher();
+    Clean();
     _stoppingCts.Token.ThrowIfCancellationRequested();
   }
 
-  public static void Stop()
+  public void Stop()
   {
     _stoppingCts?.Cancel();
     Clean();
   }
 
-  private static void Clean()
+  private void Clean()
   {
     if (!_jobHandle.IsNull) PInvoke.CloseHandle(_jobHandle);
     if (!_userToken.IsNull) PInvoke.CloseHandle(_userToken);
@@ -39,7 +40,7 @@ public static class ChildServiceLauncher
     _userToken = HANDLE.Null;
   }
 
-  private static unsafe void InitializeJobObject()
+  private unsafe void InitializeJobObject()
   {
     try
     {
@@ -72,13 +73,13 @@ public static class ChildServiceLauncher
     }
   }
 
-  private static void InitializeUserToken()
+  private void InitializeUserToken()
   {
     _userToken = GetElevatedUserToken();
   }
 
   // Copy a general user token from the current active session.
-  // private static unsafe HANDLE GetInteractiveUserToken()
+  // private unsafe HANDLE GetInteractiveUserToken()
   // {
   //   HANDLE activeSessionToken = HANDLE.Null;
   //   try
@@ -109,7 +110,7 @@ public static class ChildServiceLauncher
   // }
 
   // Create a token from current process(localSystem) with a user session's id. 
-  private static unsafe HANDLE GetElevatedUserToken()
+  private unsafe HANDLE GetElevatedUserToken()
   {
     var activeSessionToken = HANDLE.Null;
     try
@@ -151,7 +152,7 @@ public static class ChildServiceLauncher
     }
   }
   
-  private static unsafe void LaunchInJob(
+  private unsafe void LaunchInJob(
     HANDLE userToken,
     string executable,
     string arguments,
@@ -232,7 +233,7 @@ public static class ChildServiceLauncher
     }
   }
 
-  private static unsafe void LaunchInJobWithAutoRestart(HANDLE userToken, string executable, string arguments = "")
+  private unsafe void LaunchInJobWithAutoRestart(HANDLE userToken, string executable, string arguments = "")
   {
     uint exitCode = 0;
     do
@@ -251,15 +252,15 @@ public static class ChildServiceLauncher
     } while (exitCode != 0 && !_stoppingCts!.IsCancellationRequested);
   }
 
-  private static async Task LaunchServices()
+  private async Task LaunchServices()
   {
     await Task.WhenAll(
-      Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.ServerExePath, $"{LocalServer.Port}")),
+      Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.ServerExePath, $"{LocalHttpServer.Port}")),
       Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Environment.ProcessPath!, "user"))
     );
   }
 
-  private static async Task LaunchServicesWithSessionWatcher()
+  private async Task LaunchServicesWithSessionWatcher()
   {
     do
     {

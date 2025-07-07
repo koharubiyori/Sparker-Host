@@ -5,16 +5,30 @@ using SparkerUserService.LocalServices;
 using SparkerUserService.Pipes;
 using SparkerUserService.Preferences;
 using SparkerUserService.Utils;
+using ServiceShared.Utils;
 
 namespace SparkerUserService;
 
-public class UserServiceModule : IServiceModule
+public static class ServiceCollectionExtensions
 {
-  private readonly LocalServer _localServer = new();
+  public static IServiceCollection AddSparkerUserService(this IServiceCollection collection)
+  {
+    return collection
+        .AddOpenedHostedService<PipeToServer>()
+        .AddOpenedHostedService<PipeToSystemService>()
+        .AddHostedService<LocalHttpServer>()
+        .AddHostedService<UserServiceModule>()
+      ;
+  }
+}
+
+public class UserServiceModule : SessionChangeAwareService
+{
 
   public static void Initialize()
   {
-    LoggerInitializer.Initialize();
+    var logger = LoggerInitializer.CreateLoggerConfiguration("user");
+    LoggerInitializer.InitializeGlobalLogger(logger);
     Preference.InitializeAllPreferences();
 
     Log.Information("IsInUserSession: {inUserSession}, IsInteractive: {interactive}, IsElevated: {elevated}", 
@@ -23,7 +37,14 @@ public class UserServiceModule : IServiceModule
       SessionChecker.IsElevated()
     );
   }
-  public async Task ExecuteAsync(CancellationToken stoppingToken)
+
+  public UserServiceModule(PipeToServer pipeToServer, PipeToSystemService pipeToSystemService)
+  {
+    PipeSingletons.PipeToServer = pipeToServer;
+    PipeSingletons.PipeToSystemService = pipeToSystemService;
+  }
+
+  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
     if (!SessionChecker.IsWorkstationLocked())
     {
@@ -33,13 +54,9 @@ public class UserServiceModule : IServiceModule
 
     try
     {
-      await Task.WhenAll(
-        PipeToServer.Instance.RunAsync(stoppingToken),
-        PipeToSystemService.Instance.RunAsync(stoppingToken),
-        _localServer.RunAsync(stoppingToken)
-      );
+      await Task.Delay(Timeout.Infinite, stoppingToken);
     }
-    finally
+    catch (TaskCanceledException)
     {
       TrayIconManager.Clean();
     }
