@@ -17,3 +17,5 @@ Sparker.Server.exe
 Sparker.UserService.exe
 GenBase
 *.DotSettings.user
+backup/
+

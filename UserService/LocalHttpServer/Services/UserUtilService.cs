@@ -4,7 +4,7 @@ using Grpc.Core;
 using SparkerUserService.Grpc;
 using SparkerUserService.Utils;
 
-namespace SparkerUserService.LocalServices.Services;
+namespace SparkerUserService.LocalHttpServer.Services;
 
 public class UserUtilService : Grpc.UserUtilService.UserUtilServiceBase
 {
