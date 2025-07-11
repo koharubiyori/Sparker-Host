@@ -5,7 +5,7 @@ using Windows.Win32.Foundation;
 using Windows.Win32.Security;
 using Windows.Win32.System.JobObjects;
 using Windows.Win32.System.Threading;
-using Commons;
+using SparkerCommons;
 using Serilog;
 using SparkerSystemService.LocalHttpServer;
 
@@ -45,7 +45,7 @@ public class ChildServiceLauncher : BackgroundService
     try
     {
       _jobHandle = PInvoke.CreateJobObject(null, new PCWSTR(null));
-      if (_jobHandle.IsNull) throw Utils.CreateWin32ExceptionByMethodName("CreateJobObject");
+      if (_jobHandle.IsNull) throw TinyUtils.CreateWin32ExceptionByMethodName("CreateJobObject");
 
       var basicLimits = new JOBOBJECT_BASIC_LIMIT_INFORMATION
       {
@@ -63,7 +63,7 @@ public class ChildServiceLauncher : BackgroundService
             (uint)length)
          )
       {
-        throw Utils.CreateWin32ExceptionByMethodName("SetInformationJobObject");
+        throw TinyUtils.CreateWin32ExceptionByMethodName("SetInformationJobObject");
       }
     }
     catch
@@ -86,10 +86,10 @@ public class ChildServiceLauncher : BackgroundService
   //   {
   //     BOOL result;
   //     var sessionId = PInvoke.WTSGetActiveConsoleSessionId();
-  //     if (sessionId == 0xffffff) throw Utils.CreateWin32ExceptionByMethodName("WTSGetActiveConsoleSessionId");
+  //     if (sessionId == 0xffffff) throw TinyUtils.CreateWin32ExceptionByMethodName("WTSGetActiveConsoleSessionId");
   //
   //     result = PInvoke.WTSQueryUserToken(sessionId, ref activeSessionToken);
-  //     if (!result) throw Utils.CreateWin32ExceptionByMethodName("WTSQueryUserToken");
+  //     if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("WTSQueryUserToken");
   //
   //     var newToken = HANDLE.Null;
   //     result = PInvoke.DuplicateTokenEx(
@@ -100,7 +100,7 @@ public class ChildServiceLauncher : BackgroundService
   //       TOKEN_TYPE.TokenPrimary,
   //       &newToken
   //     );
-  //     if (!result) throw Utils.CreateWin32ExceptionByMethodName("DuplicateTokenEx");
+  //     if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("DuplicateTokenEx");
   //     return newToken;
   //   }
   //   finally
@@ -116,14 +116,14 @@ public class ChildServiceLauncher : BackgroundService
     try
     {
       var sessionId = PInvoke.WTSGetActiveConsoleSessionId();
-      if (sessionId == 0xffffff) throw Utils.CreateWin32ExceptionByMethodName("WTSGetActiveConsoleSessionId");
+      if (sessionId == 0xffffff) throw TinyUtils.CreateWin32ExceptionByMethodName("WTSGetActiveConsoleSessionId");
 
       var result = PInvoke.OpenProcessToken(
         PInvoke.GetCurrentProcess(),
         TOKEN_ACCESS_MASK.TOKEN_DUPLICATE,
         &activeSessionToken
       );
-      if (!result) throw Utils.CreateWin32ExceptionByMethodName("OpenProcessToken");
+      if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("OpenProcessToken");
 
       var newToken = HANDLE.Null;
       result = PInvoke.DuplicateTokenEx(
@@ -134,7 +134,7 @@ public class ChildServiceLauncher : BackgroundService
         TOKEN_TYPE.TokenPrimary,
         &newToken
       );
-      if (!result) throw Utils.CreateWin32ExceptionByMethodName("DuplicateTokenEx");
+      if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("DuplicateTokenEx");
 
       result = PInvoke.SetTokenInformation(
         newToken,
@@ -142,7 +142,7 @@ public class ChildServiceLauncher : BackgroundService
         &sessionId,
         sizeof(uint)
       );
-      if (!result) throw Utils.CreateWin32ExceptionByMethodName("SetTokenInformation");
+      if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("SetTokenInformation");
 
       return newToken;
     }
@@ -172,10 +172,10 @@ public class ChildServiceLauncher : BackgroundService
 
       nuint lpSize = 0;
       Native.InitializeProcThreadAttributeList(IntPtr.Zero, 1, 0, &lpSize);
-      if (lpSize == 0) throw Utils.CreateWin32ExceptionByMethodName("InitializeProcThreadAttributeList");
+      if (lpSize == 0) throw TinyUtils.CreateWin32ExceptionByMethodName("InitializeProcThreadAttributeList");
       startupInfo.lpAttributeList = (LPPROC_THREAD_ATTRIBUTE_LIST)Marshal.AllocHGlobal((int)lpSize);
       result = PInvoke.InitializeProcThreadAttributeList(startupInfo.lpAttributeList, 1, 0, &lpSize);
-      if (!result) throw Utils.CreateWin32ExceptionByMethodName("InitializeProcThreadAttributeList");
+      if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("InitializeProcThreadAttributeList");
 
       fixed (HANDLE* pJobHandle = &_jobHandle)
       {
@@ -188,7 +188,7 @@ public class ChildServiceLauncher : BackgroundService
         );
       }
 
-      if (!result) throw Utils.CreateWin32ExceptionByMethodName("UpdateProcThreadAttribute");
+      if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("UpdateProcThreadAttribute");
 
       // Create Process
       processInfo = new PROCESS_INFORMATION();
@@ -213,7 +213,7 @@ public class ChildServiceLauncher : BackgroundService
           lpStartupInfo: &startupInfo,
           lpProcessInformation: pProcessInfo
         );
-        if (!result) throw Utils.CreateWin32ExceptionByMethodName("CreateProcessAsUserW");
+        if (!result) throw TinyUtils.CreateWin32ExceptionByMethodName("CreateProcessAsUserW");
       }
     }
     catch (Win32Exception ex)
@@ -255,7 +255,7 @@ public class ChildServiceLauncher : BackgroundService
   private async Task LaunchServices()
   {
     await Task.WhenAll(
-      Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.ServerExePath, $"{LocalHttpServerService.Port}")),
+      // Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Constants.ServerExePath, $"{LocalHttpServerService.Port}")),
       Task.Run(() => LaunchInJobWithAutoRestart(_userToken, Environment.ProcessPath!, "user"))
     );
   }
@@ -267,7 +267,7 @@ public class ChildServiceLauncher : BackgroundService
       try
       {
         var activeSessionId = PInvoke.WTSGetActiveConsoleSessionId();
-        if (activeSessionId == 0xffffff) throw Utils.CreateWin32ExceptionByMethodName("WTSGetActiveConsoleSessionId");
+        if (activeSessionId == 0xffffff) throw TinyUtils.CreateWin32ExceptionByMethodName("WTSGetActiveConsoleSessionId");
         if (activeSessionId != _currentActiveSessionId)
         {
           Log.Information("The child services restart with a new user session: {sessionId}", activeSessionId);

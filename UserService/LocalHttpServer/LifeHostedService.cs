@@ -8,7 +8,7 @@ public class LifeHostedService : IHostedService
 {
   public Task StartAsync(CancellationToken cancellationToken)
   {
-    _ = PipeSingletons.PipeToServer.WritePortReport(LocalHttpServer.LocalHttpServerService.Port);
+    _ = PipeSingletons.PipeToSystemService.WriteSubmitPort(LocalHttpServer.LocalHttpServerService.Port);
     return Task.CompletedTask;
   }
 

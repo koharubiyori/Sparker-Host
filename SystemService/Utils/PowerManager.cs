@@ -68,11 +68,11 @@ public static class PowerManager
         &hToken
       );
 
-      if (!openProcessTokenResult) throw Utils.CreateWin32ExceptionByMethodName("OpenProcessToken");
+      if (!openProcessTokenResult) throw TinyUtils.CreateWin32ExceptionByMethodName("OpenProcessToken");
 
       LUID luid = new();
       var lookupPrivilegeValueResult = PInvoke.LookupPrivilegeValue("", "SeShutdownPrivilege", out luid);
-      if (!lookupPrivilegeValueResult) throw Utils.CreateWin32ExceptionByMethodName("LookupPrivilegeValue");
+      if (!lookupPrivilegeValueResult) throw TinyUtils.CreateWin32ExceptionByMethodName("LookupPrivilegeValue");
 
       TOKEN_PRIVILEGES tp = new()
       {
@@ -85,7 +85,7 @@ public static class PowerManager
 
       var adjustTokenPrivilegesResult =
         PInvoke.AdjustTokenPrivileges(hToken, false, &tp, (uint)TOKEN_PRIVILEGES.SizeOf(1));
-      if (!adjustTokenPrivilegesResult) throw Utils.CreateWin32ExceptionByMethodName("AdjustTokenPrivileges");
+      if (!adjustTokenPrivilegesResult) throw TinyUtils.CreateWin32ExceptionByMethodName("AdjustTokenPrivileges");
 
       return true;
     }

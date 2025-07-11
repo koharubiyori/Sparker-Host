@@ -6,7 +6,7 @@ using SparkerUserService.Utils;
 
 namespace SparkerUserService.LocalHttpServer.Services;
 
-public class UserUtilService : Grpc.UserUtilService.UserUtilServiceBase
+public class UserUtilService : DesktopService.DesktopServiceBase
 {
   public override Task<Empty> ShowToast(ShowToastRequest request, ServerCallContext context)
   {

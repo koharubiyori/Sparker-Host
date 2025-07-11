@@ -18,16 +18,10 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Github" xml:space="preserve">
-        <value>Github</value>
+    <data name="S_DevicePairingCodeDesc" xml:space="preserve">
+        <value>Please input the code on your device to pair the device.</value>
     </data>
-    <data name="Restart" xml:space="preserve">
-        <value>Restart</value>
-    </data>
-    <data name="Quit" xml:space="preserve">
-        <value>Quit</value>
-    </data>
-    <data name="S_Welcome" xml:space="preserve">
-        <value>Sparker is running...</value>
+    <data name="F_DevicePairingCode" xml:space="preserve">
+        <value>Device Pairing Code: {0}</value>
     </data>
 </root>

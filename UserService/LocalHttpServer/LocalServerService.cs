@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
-using Commons;
+using SparkerCommons;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -20,7 +20,7 @@ public class LocalHttpServerService : BackgroundService
   public LocalHttpServerService()
   {
     var builder = WebApplication.CreateSlimBuilder();
-    var logger = LoggerInitializer.CreateLoggerConfiguration("system", true);
+    var logger = LoggerInitializer.CreateLoggerConfiguration("system", "WebHost");
     builder.Services
       .AddSerilog(logger)
       .AddHostedService<LifeHostedService>();

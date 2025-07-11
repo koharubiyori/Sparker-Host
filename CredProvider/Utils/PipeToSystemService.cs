@@ -5,8 +5,8 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Commons;
-using Commons.Utils;
+using SparkerCommons;
+using SparkerCommons.Utils;
 
 namespace SparkerCredProvider.Utils
 {

@@ -52,7 +52,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\Commons\Protos\userUtil.proto" GrpcServices="Server" />
+        <Protobuf Include="..\Commons\Protos\desktop.proto" GrpcServices="Server" />
     </ItemGroup>
 
     <ItemGroup>

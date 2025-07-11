@@ -2,7 +2,7 @@
 // using Serilog;
 // using SparkerSystemService.LocalServices;
 // using SparkerSystemService.Pipes;
-// using SparkerSystemService.Utils;
+// using SparkerSystemService.TinyUtils;
 //
 // namespace SparkerSystemService;
 //

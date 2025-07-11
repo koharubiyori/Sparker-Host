@@ -27,7 +27,7 @@ public class HostInfoService : Grpc.HostInfoService.HostInfoServiceBase
   
   public override Task<IsValidCredentialResponse> IsValidCredential(IsValidCredentialRequest request, ServerCallContext context)
   {
-    var result = Utils.Utils.IsValidCredential(request.Username, request.Domain, request.Password);
+    var result = Utils.TinyUtils.IsValidCredential(request.Username, request.Domain, request.Password);
     return Task.FromResult(new IsValidCredentialResponse { Result = result });
   }
 }

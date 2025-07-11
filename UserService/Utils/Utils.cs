@@ -19,7 +19,7 @@ public static class Utils
   public static void WelcomeMessage()
   {
     if (!Preference.Reminder.FirstRun) return;
-    TrayIconManager.ShowNotification(Resources.Strings.Welcome);
+    TrayIconManager.ShowNotification(Resources.Strings.S_Welcome);
     Preference.Reminder.FirstRun = false;
   }
   

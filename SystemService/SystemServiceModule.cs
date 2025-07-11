@@ -1,10 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using Serilog;
 using ServiceShared;
 using ServiceShared.Utils;
-using SparkerSystemService.LocalHttpServer;
 using SparkerSystemService.Pipes;
+using SparkerSystemService.Preferences;
+using SparkerSystemService.RemoteHttpServer;
 using SparkerSystemService.Utils;
 
 namespace SparkerSystemService;
@@ -17,8 +17,10 @@ public static class ServiceCollectionExtensions
       .AddOpenedHostedService<PipeToCred>()
       .AddOpenedHostedService<PipeToServer>()
       .AddOpenedHostedService<PipeToUserService>()
-      .AddHostedService<LocalHttpServerService>()
+      .AddHostedService<RemoteHttpServerService>()
+#if !DEBUG
       .AddHostedService<ChildServiceLauncher>()
+#endif
       .AddHostedService<SystemServiceModule>()
     ;
   }
@@ -52,6 +54,7 @@ public class SystemServiceModule : SessionChangeAwareService
   {
     var logger = LoggerInitializer.CreateLoggerConfiguration("system");
     LoggerInitializer.InitializeGlobalLogger(logger);
+    Preference.InitializeAllPreferences();
   }
 
   protected override Task ExecuteAsync(CancellationToken stoppingToken)

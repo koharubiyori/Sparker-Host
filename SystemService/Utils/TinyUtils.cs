@@ -3,10 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Security;
+using SparkerUserService.Grpc;
 
 namespace SparkerSystemService.Utils;
 
-public static class Utils
+public static class TinyUtils
 {
   public static Win32Exception CreateWin32ExceptionByMethodName(string methodName)
   {
@@ -25,5 +26,16 @@ public static class Utils
       out var hToken
     );
     return result == 0 ? Marshal.GetLastWin32Error() : 0;
+  }
+
+  public static async Task ShowToast(string title, string content)
+  {
+    var desktopClient = await GrpcClientProvider.Desktop;
+    var request = new ShowToastRequest
+    {
+      Title = title,
+      Content = content
+    };
+    await desktopClient.ShowToastAsync(request);
   }
 }

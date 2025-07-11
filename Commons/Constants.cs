@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Commons
+namespace SparkerCommons
 {
   public static class Constants
   {
@@ -39,38 +39,32 @@ namespace Commons
       {
         public const string Restart = "restart";  // Restart the SystemService itself
         public const string Stop = "stop";  // Clean and Stop the SystemService itself
+        public const string SubmitPort = "submitPort";  // Receive the dynamic gRPC port number in use of the UserService. Arguments: port
       }
     }
 
     public const string GithubUrl = "https://github.com/koharubiyori/Sparker-Host";
     public const string ServiceName = "Sparker";
 
-    private const string PreferenceDirPathName = "Preferences";
-    private const string LogDirPathName = "Logs";
-    private const string ServerExeName = "Sparker.Server.exe";
-    private const string UserServiceExeName = "Sparker.UserService.exe";
-
+    public const int ServerServicePort = 13001;
     public const int TestSystemServicePort = 13002;
     public const int TestUserServicePort = 13003;
 
 #if DEBUG
     public const bool Debug = true;
     public static readonly string BasePath = Path.Combine(Directory.GetCurrentDirectory(), "GenBase");
-    public static readonly string PreferenceDirPath = Path.Combine(BasePath, PreferenceDirPathName);
-    public static readonly string LogDirPath = Path.Combine(BasePath, LogDirPathName);
-    public static readonly string ServerExePath = Path.Combine(BasePath, ServerExeName);
-    public static readonly string UserServiceExePath = Path.Combine(BasePath, UserServiceExeName);
 #else
     public const bool Debug = false;
-#if NET48
-    public static readonly string BasePath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-#else
-    public static readonly string BasePath = Path.GetDirectoryName(Environment.ProcessPath)!;
+  #if NET48
+      public static readonly string BasePath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+  #else
+      public static readonly string BasePath = Path.GetDirectoryName(Environment.ProcessPath)!;
+  #endif
 #endif
-    public static readonly string PreferenceDirPath = Path.Combine(BasePath, PreferenceDirPathName);
-    public static readonly string LogDirPath = Path.Combine(BasePath, LogDirPathName);
-    public static readonly string ServerExePath = Path.Combine(BasePath, ServerExeName); 
-    public static readonly string UserServiceExePath = Path.Combine(BasePath, UserServiceExeName);
-#endif
+    public static readonly string PreferenceDirPath = Path.Combine(BasePath, "Preferences");
+    public static readonly string LogDirPath = Path.Combine(BasePath, "Logs");
+    public static readonly string ServerExePath = Path.Combine(BasePath, "Sparker.Server.exe");
+    public static readonly string UserServiceExePath = Path.Combine(BasePath, "Sparker.UserService.exe");
+    public static readonly string TokenKeyFile = Path.Combine(BasePath, "token.key");
   }
 }

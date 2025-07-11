@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SparkerUserService.Resources {
+namespace SparkerSystemService.Resources {
     using System;
     
     
@@ -38,7 +38,7 @@ namespace SparkerUserService.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SparkerUserService.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SparkerSystemService.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,38 +60,20 @@ namespace SparkerUserService.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Github.
+        ///   Looks up a localized string similar to Device Pairing Code: {0}.
         /// </summary>
-        internal static string Github {
+        internal static string F_DevicePairingCode {
             get {
-                return ResourceManager.GetString("Github", resourceCulture);
+                return ResourceManager.GetString("F_DevicePairingCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quit.
+        ///   Looks up a localized string similar to Please input the code on your device to pair the device..
         /// </summary>
-        internal static string Quit {
+        internal static string S_DevicePairingCodeDesc {
             get {
-                return ResourceManager.GetString("Quit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restart.
-        /// </summary>
-        internal static string Restart {
-            get {
-                return ResourceManager.GetString("Restart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sparker is running....
-        /// </summary>
-        internal static string S_Welcome {
-            get {
-                return ResourceManager.GetString("S_Welcome", resourceCulture);
+                return ResourceManager.GetString("S_DevicePairingCodeDesc", resourceCulture);
             }
         }
     }

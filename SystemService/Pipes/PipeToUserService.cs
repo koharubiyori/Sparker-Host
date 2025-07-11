@@ -1,6 +1,7 @@
 using System.IO.Pipes;
-using Commons;
+using SparkerCommons;
 using ServiceShared.Utils;
+using SparkerSystemService.Utils;
 
 namespace SparkerSystemService.Pipes;
 
@@ -21,7 +22,10 @@ public class PipeToUserService()
       case Constants.SystemServicePipeEvents.In.Stop:
         SystemServiceModule.Stop();
         break;
-      
+      case Constants.SystemServicePipeEvents.In.SubmitPort:
+        var port = int.Parse(message[1]); 
+        GrpcClientProvider.InitializeChannel(port);
+        break;
     }
   }
 }
