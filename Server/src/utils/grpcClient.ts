@@ -3,7 +3,7 @@ import { Client, createClient, Transport } from '@connectrpc/connect'
 import { createGrpcTransport } from '@connectrpc/connect-node'
 import { HostInfoService } from '../protoGen/hostInfo_pb'
 import { PowerService } from '../protoGen/power_pb'
-import { UserUtilService } from '../protoGen/userUtil_pb'
+import { DesktopService } from '../protoGen/desktop_pb'
 
 export type GrpcClientType = 'system' | 'user'
 
@@ -41,7 +41,7 @@ class DynamicPortGrpcClientBase<T extends DescService> {
 export const grpcClients = {
   hostInfo: createDynamicPortGrpcClient('system', HostInfoService),
   power: createDynamicPortGrpcClient('system', PowerService),
-  userUtil: createDynamicPortGrpcClient('user', UserUtilService),
+  desktop: createDynamicPortGrpcClient('user', DesktopService),
 }
 
 function createDynamicPortGrpcClient<T extends DescService>(type: GrpcClientType, service: T) {

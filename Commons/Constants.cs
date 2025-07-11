@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Commons
+namespace SparkerCommons
 {
   public static class Constants
   {

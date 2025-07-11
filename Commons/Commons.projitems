@@ -15,6 +15,6 @@
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Protos\hostInfo.proto" />
     <Content Include="$(MSBuildThisFileDirectory)Protos\power.proto" />
-    <Content Include="$(MSBuildThisFileDirectory)Protos\userUtil.proto" />
+    <Content Include="$(MSBuildThisFileDirectory)Protos\desktop.proto" />
   </ItemGroup>
 </Project>

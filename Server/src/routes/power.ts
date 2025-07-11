@@ -35,7 +35,7 @@ const unlock: RequestHandlerToGrpc<{}, UnlockResponse> = async (ctx, next) => {
 }
 
 const lock: RequestHandlerToGrpc<{}, {}> = async (ctx, next) => {
-  await grpcClients.userUtil.lockSession({})
+  await grpcClients.desktop.lockSession({})
   ctx.body = createResponse.success()
   await next()
 }

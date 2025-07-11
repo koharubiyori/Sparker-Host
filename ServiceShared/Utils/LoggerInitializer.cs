@@ -1,4 +1,4 @@
-using Commons;
+using SparkerCommons;
 using Serilog;
 using Serilog.Enrichers.WithCaller;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -29,8 +29,8 @@ public static class LoggerInitializer
         applyThemeToRedirectedOutput: true
       );
 #else
-    // loggerConfiguration
-    //   .MinimumLevel.Error();
+    loggerConfiguration
+      .MinimumLevel.Error();
 #endif
 
     return loggerConfiguration.CreateLogger();

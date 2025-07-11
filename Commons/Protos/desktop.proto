@@ -5,7 +5,7 @@ import "google/protobuf/empty.proto";
 
 package sparker.service;
 
-service UserUtilService {
+service DesktopService {
   rpc ShowToast (ShowToastRequest) returns (google.protobuf.Empty);
   rpc LockSession (google.protobuf.Empty) returns (google.protobuf.Empty);
 }
