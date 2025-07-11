@@ -8,8 +8,9 @@ innoOut
 bin/
 obj/
 /packages/
-riderModule.iml
 /_ReSharper.Caches/
+backup/
+riderModule.iml
 SystemService/config
 .vs
 .idea
